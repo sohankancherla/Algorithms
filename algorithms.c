@@ -9,6 +9,8 @@ int binary_search(char* name, char* names[], int size);
 void int_print_array(int array[], int size);
 void selection_sort(int numbers[], int size);
 void bubble_sort(int numbers[], int size);
+void merge_sort(int numbers[], int left, int right, int size);
+void merge(int numbers[], int left, int middle, int rights, int size);
 
 int main()
 {
@@ -68,6 +70,16 @@ int main()
     //Bubble Sort
     printf("\n-------Bubble Sort-------\n");
     bubble_sort(numbers2, size3);
+
+    //Reset Test Case
+    int numbers3[] = {7, 2, 5, 4, 1, 6, 0, 3};
+
+    //Merge Sort
+    printf("\n-------Merge Sort-------\n");
+    int_print_array(numbers3, size3);
+    merge_sort(numbers3, 0, size3 - 1, size3);
+    printf("Array is Sorted!\n");
+
 }
 
 //Function to print an int array
@@ -230,4 +242,82 @@ void bubble_sort(int numbers[], int size)
     }
     printf("Array is Sorted!\n");
     int_print_array(numbers, size);
+}
+
+void merge_sort(int numbers[], int left, int right, int size)
+{
+    //Base Case
+    if ((right - left) != 0)
+    {
+        int middle = (left + right) / 2;
+        if ((right + left)  % 2 == 0)
+        {
+            middle--;
+        }
+
+        //Sort left half
+        printf("Sort array between index %i and %i\n", left, middle);
+        merge_sort(numbers, left, middle, size);
+
+        //Sort right half
+        printf("Sort array between index %i and %i\n", middle + 1, right);
+        merge_sort(numbers, middle + 1, right, size);
+
+        //Merge both halfs
+        printf("Merge both halfs together\n");
+        merge(numbers, left, middle, right, size);
+        int_print_array(numbers, size);
+    }
+
+}
+
+void merge(int numbers[], int left, int middle, int right, int size)
+{
+    //Create temp left and right half arrays
+    int size1 = middle - left + 1;
+    int size2 = right - middle;
+    int temp[100];
+    int temp2[100];
+    
+    for (int i = 0; i < size1; i++)
+    {
+        temp[i] = numbers[left + i];
+    }
+    for (int j = 0; j < size2; j++)
+    {
+        temp2[j] = numbers[middle + 1 + j];
+    }
+
+    int k = left;
+    int i = 0;
+    int j = 0;
+    
+    //Merge the arrays by comparing the first elements of both halfs
+    while (i < size1 && j < size2)
+    {
+        if (temp[i] <= temp2[j])
+        {
+            numbers[k] = temp[i];
+            i++;
+        }
+        else
+        {
+            numbers[k] = temp2[j];
+            j++;
+        }
+        k++;
+    }
+    //Add the remaining elements leftover
+    while (i < size1)
+    {
+        numbers[k] = temp[i];
+        i++;
+        k++;
+    }
+    while (j < size2)
+    {
+        numbers[k] = temp2[j];
+        j++;
+        k++;
+    }
 }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 //Function Prototypes
 void str_print_array(char* array[], int size);
@@ -7,6 +8,7 @@ int linear_search(char* movie, char* movies[], int size);
 int binary_search(char* name, char* names[], int size);
 void int_print_array(int array[], int size);
 void selection_sort(int numbers[], int size);
+void bubble_sort(int numbers[], int size);
 
 int main()
 {
@@ -59,6 +61,13 @@ int main()
     //Selection Sort
     printf("\n-------Selection Sort-------\n");
     selection_sort(numbers, size3);
+
+    //Reset Test Case
+    int numbers2[] = {7, 2, 5, 4, 1, 6, 0, 3};
+
+    //Bubble Sort
+    printf("\n-------Bubble Sort-------\n");
+    bubble_sort(numbers2, size3);
 }
 
 //Function to print an int array
@@ -160,6 +169,7 @@ void int_print_array(int array[], int size)
 
 void selection_sort(int numbers[], int size)
 {
+    // Loop through size-1
     for (int i = 0; i < size - 1; i++)
     {
         int_print_array(numbers, size);
@@ -167,6 +177,7 @@ void selection_sort(int numbers[], int size)
         int min_value = numbers[i];
         int index = i;
 
+        //Find the smallest number between numbers[i] and numbers[size-1]
         for (int j = i + 1; j < size; j++)
         {
             if (numbers[j] < min_value)
@@ -175,6 +186,7 @@ void selection_sort(int numbers[], int size)
                 index = j;
             }
         }
+        //Swamp smallest number with numbers[i]
         printf("Swap %i with %i\n", numbers[i], numbers[index]);
         int temp = numbers[i];
         numbers[i] = min_value;
@@ -184,3 +196,38 @@ void selection_sort(int numbers[], int size)
     int_print_array(numbers, size);
 }
 
+void bubble_sort(int numbers[], int size)
+{
+    int iteration = 1;
+    //Loop until none of the adjacent elements are swapped
+    while (true)
+    {
+        bool swapped = false;
+        int_print_array(numbers, size);
+        printf("Step %i:\n", iteration);
+
+        //Loop through list
+        for (int i = 0; i < size - 1; i++)
+        {
+            //Swap adjacent elements that are unordered
+            if (numbers[i] > numbers[i + 1])
+            {
+                printf("Swap %i with %i\n", numbers[i], numbers[i + 1]);
+                int temp = numbers[i];
+                numbers[i] = numbers[i + 1];
+                numbers[i + 1] = temp;
+                swapped = true;
+            }
+        }
+
+        //Break if none of the elements got swapped
+        if (swapped == false)
+        {
+            break;
+        }
+
+        iteration++;
+    }
+    printf("Array is Sorted!\n");
+    int_print_array(numbers, size);
+}
